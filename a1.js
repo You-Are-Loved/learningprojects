@@ -1,36 +1,42 @@
+import {useEffect, useState} from "react";
+import {onSnapshot, collection} from "@firebase/firestore";
+import db from "./firebase";
+const Dot = () => {
+  const style = {
+    height:25,
+    width:25,
+    margin: "0px 10px",
+    backgroundColor: color,
+  borderRadius: "50px",
+display: "inline-block", 
+ };
+ return <span style = {style}></span>;
+};
 
-import React, { useState } from 'react';
-import styled from 'styled-components';
-export default function a1(){
-  
-const Button = styled.button`
-`;
-const tog = styled(Button)`
-  opacity: 0.5;
-  ${({ active }) =>
-    active &&
-    `
-    opacity: 1;
-  `}
-`;
-const grup = styled.div`
-  display: flex;
-`;
-const types = ['Good', 'Ok', 'Bad'];
-function togGrup() {
-  const [active, setActive] = useState(types[0]);
-  return (
-    <grup>
-      {types.map(type => (
-        <tog
-          key={type}
-          active={active === type}
-          onClick={() => setActive(type)}
-        >
-          {type}
-    </tog>
-      ))}
-    </grup>
-  );
-}
-}
+  export default function a1()
+  { 
+    const[colors, setColors] = useState([{name: "Loading...", id: "initial"}]);
+    console.log(colors);
+    useEffect(
+      () => 
+      onSnapshot(collection(db, "colors"),(snapshot) => 
+        setColors(snapshot.docs.map((doc) => ({...doc.data(), id: doc.id})))
+      ),
+      []
+      );
+      
+    return(
+     <div className = "root">
+      <button className = "button">New</button>
+      <ul>
+        {
+          colors.map((color) => (
+        
+        <li key = {color.display}>
+        <a href = "#">edit</a> <Dot color = {color.value} /> {color.name}
+        </li>
+          ))}
+        </ul>
+    </div>
+    );
+  }
