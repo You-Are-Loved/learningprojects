@@ -22,7 +22,7 @@ function togGrup() {
   return (
     <grup>
       {types.map(type => (
-        <ButtonToggle
+        <tog
           key={type}
           active={active === type}
           onClick={() => setActive(type)}
